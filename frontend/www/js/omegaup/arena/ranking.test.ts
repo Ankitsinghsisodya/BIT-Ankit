@@ -1,20 +1,20 @@
 jest.mock('../../../third_party/js/diff_match_patch.js');
 
-import { types } from '../api_types';
-import T from '../lang';
-import {
-  onRankingChanged,
-  onRankingEvents,
-  updateProblemScore,
-  createChart,
-  scoreboardColors,
-  mergeRankings,
-  onVirtualRankingChanged,
-} from './ranking';
-import { rankingStoreConfig } from './rankingStore';
 import { createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
+import { types } from '../api_types';
+import T from '../lang';
 import { ScoreMode } from './navigation';
+import {
+  createChart,
+  mergeRankings,
+  onRankingChanged,
+  onRankingEvents,
+  onVirtualRankingChanged,
+  scoreboardColors,
+  updateProblemScore,
+} from './ranking';
+import { rankingStoreConfig } from './rankingStore';
 
 describe('ranking', () => {
   const now = Date.now();
@@ -168,7 +168,7 @@ describe('ranking', () => {
   describe('mergeRankings', () => {
     it('Should merge original ranking with current scoreboard', () => {
       const { mergedScoreboard, originalContestEvents } = mergeRankings({
-        scoreboard,
+        scoreboard: { ...scoreboard, start_time: new Date(now - 1000) },
         originalScoreboardEvents,
         navbarProblems,
       });
@@ -259,7 +259,7 @@ describe('ranking', () => {
       const store = new Vuex.Store(rankingStoreConfig);
 
       onVirtualRankingChanged({
-        scoreboard,
+        scoreboard: { ...scoreboard, start_time: new Date(now - 1000) },
         scoreboardEvents: originalScoreboardEvents,
         problems: navbarProblems,
         startTime: new Date(0),
