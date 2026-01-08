@@ -1552,6 +1552,7 @@ const translations: { [key: string]: string; } = {
   profileSchool: "Escuela",
   profileSchoolMonthlySolvedProblemsCount: "Total de problemas resueltos mensualmente por los coders de %(school)",
   profileSolvedProblems: "Problemas resueltos",
+  profileAttemptingProblems: "Intentando",
   profileState: "Estado",
   profileStatistics: "Estad\u00edsticas",
   profileStatisticsCumulative: "Acumulativas",
