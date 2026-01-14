@@ -403,28 +403,28 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { types } from '../../api_types';
-import * as ui from '../../ui';
 import T from '../../lang';
+import * as ui from '../../ui';
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
-import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 // Import Only Required Plugins
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { fas } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
-  TabsPlugin,
-  CardPlugin,
-  DropdownPlugin,
-  LayoutPlugin,
+    CardPlugin,
+    DropdownPlugin,
+    LayoutPlugin,
+    TabsPlugin,
 } from 'bootstrap-vue';
+import infiniteScroll from 'vue-infinite-scroll';
 import ContestCard from './ContestCard.vue';
 import ContestSkeleton from './ContestSkeleton.vue';
-import infiniteScroll from 'vue-infinite-scroll';
 Vue.use(TabsPlugin);
 Vue.use(CardPlugin);
 Vue.use(DropdownPlugin);
@@ -682,6 +682,44 @@ class ArenaContestList extends Vue {
   ) {
     if (typeof oldValue === 'undefined') return;
     this.fetchInitialContests();
+  }
+
+  // Watchers for props to support browser back/forward button navigation
+  // These update internal state when parent changes props (e.g., from popstate event)
+  @Watch('tab')
+  onTabPropChanged(newValue: ContestTab) {
+    if (this.currentTab !== newValue) {
+      this.currentTab = newValue;
+    }
+  }
+
+  @Watch('sortOrder')
+  onSortOrderPropChanged(newValue: ContestOrder) {
+    if (this.currentOrder !== newValue) {
+      this.currentOrder = newValue;
+    }
+  }
+
+  @Watch('filter')
+  onFilterPropChanged(newValue: ContestFilter) {
+    if (this.currentFilter !== newValue) {
+      this.currentFilter = newValue;
+    }
+  }
+
+  @Watch('page')
+  onPagePropChanged(newValue: number) {
+    if (this.currentPage !== newValue) {
+      this.currentPage = newValue;
+      this.hasMore = true;
+    }
+  }
+
+  @Watch('query')
+  onQueryPropChanged(newValue: string) {
+    if (this.currentQuery !== newValue) {
+      this.currentQuery = newValue;
+    }
   }
 }
 
